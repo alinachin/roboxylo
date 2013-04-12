@@ -1,17 +1,11 @@
 #include "mbed.h"
+#include "Note.h"
 
-#define BPM 100  // global beats per minute
 DigitalOut keys[] = { (p5), (p6), (p7), (p8), (p9), (p10), (p11), (p12), (p13), (p14), (p15), (p16), (p17) };  // output pins, 1 for each key
 Timeout universal;  // universal timer - counts down after each note to next note
 
-typedef struct mynote {
-    int n;   // number of notes
-    int *value;  // pointer to list of values (1 to 13)
-    float length;  // time (s) until next note
-    mynote* next;  // pointer to next note
-} Note;
-
 Note* currentnote;  // pointer to current note
+Note* lastnote;     // pointer to last (tail) note - for note creation
 
 void play()  {
     // turn on keys
@@ -42,18 +36,10 @@ void playnext()  {
 
 
 
-Note* setnote(int numnotes, int notes[], int lengthn, int lengthd)  {
-    Note* temp = (Note*)malloc(sizeof(Note));
-    temp->n = numnotes;
-    temp->value = (int*)malloc(sizeof(int) * numnotes);
-    for (int i=0; i<numnotes; ++i)
-        temp->value[i] = notes[i];
-    temp->length = (float)lengthn/lengthd / BPM * 60;
-    temp->next = NULL;
+// easily create a continuous sequence of notes, returning a pointer to initial note
+void scale(int start, int end, int lengthn, int lengthd)  {
     
-    return temp;
 }
-
 
 
 int main() {
@@ -65,14 +51,16 @@ int main() {
   
     int E[] = {1};
     int F[] = {2};
+    int G[] = {3};
+    int A[] = {4};
     Note* temp1;
     Note* temp2;
     
-    currentnote = setnote(1, E, 1, 4);
-    currentnote->next = temp1 = setnote(1, E, 1, 4);
-    temp1->next = temp2 = setnote(1, F, 1, 2);
-    temp2->next = temp1 = setnote(1, E, 1, 2);
-    temp1->next = temp2 = setnote(1, F, 1, 2);
+    currentnote = setnote(1, G, 1, 4);
+    currentnote->next = temp1 = setnote(1, A, 1, 4);
+    temp1->next = temp2 = setnote(1, G, 1, 2);
+    temp2->next = temp1 = setnote(1, F, 1, 2);
+    temp1->next = temp2 = setnote(1, E, 1, 1);
     
 
     // ready to play
