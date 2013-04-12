@@ -1,10 +1,11 @@
 #include "mbed.h"
 
-#define BPM 72  // global beats per minute
-DigitalOut keys[] = { (p5) };  // output pins, 1 for each key
+#define BPM 100  // global beats per minute
+DigitalOut keys[] = { (p5), (p6), (p7), (p8), (p9), (p10), (p11), (p12), (p13), (p14), (p15), (p16), (p17) };  // output pins, 1 for each key
 Timeout universal;  // universal timer - counts down after each note to next note
 
 typedef struct mynote {
+    int n;   // number of notes
     int *value;  // pointer to list of values (1 to 13)
     float length;  // time (s) until next note
     mynote* next;  // pointer to next note
@@ -14,10 +15,12 @@ Note* currentnote;  // pointer to current note
 
 void play()  {
     // turn on keys
-    keys[currentnote->value[0] - 1] = 1;
-    wait_ms(100);
+    for (int i=0; i < currentnote->n; ++i)
+        keys[currentnote->value[i] - 1] = 1;
+    wait_ms(50);
     // turn off
-    keys[currentnote->value[0] - 1] = 0;
+    for (int i=0; i < currentnote->n; ++i)
+        keys[currentnote->value[i] - 1] = 0;
 }
 
 // play next note
@@ -41,6 +44,7 @@ void playnext()  {
 
 Note* setnote(int numnotes, int notes[], int lengthn, int lengthd)  {
     Note* temp = (Note*)malloc(sizeof(Note));
+    temp->n = numnotes;
     temp->value = (int*)malloc(sizeof(int) * numnotes);
     for (int i=0; i<numnotes; ++i)
         temp->value[i] = notes[i];
@@ -54,29 +58,22 @@ Note* setnote(int numnotes, int notes[], int lengthn, int lengthd)  {
 
 int main() {
     // turn all keys off?
-    // for ()
-    keys[0] = 0;
+    for (int i=0; i<13; ++i)
+        keys[i] = 0;
 
     // load notes into memory
-    /*
-    currentnote = (Note*)malloc(sizeof(Note));
-    currentnote->value = (int*)malloc(sizeof(int) * 1);
-    currentnote->value[0] = 1;
-    currentnote->length = 1.0 / BPM * 60;
+  
+    int E[] = {1};
+    int F[] = {2};
+    Note* temp1;
+    Note* temp2;
     
-    Note* temp = (Note*)malloc(sizeof(Note));
-    temp->value = (int*)malloc(sizeof(int) * 1);
-    temp->value[0] = 1;
-    temp->length = 1.0 / BPM * 60;
-    currentnote->next = temp;
-    temp->next = NULL;
-    */
-    int notes[] = {1};
-    currentnote = setnote(1, notes, 1, 4);
-    Note* temp = setnote(1, notes, 1, 4);
-    currentnote->next = temp;
-    temp->next = setnote(1, notes, 1, 2);
-    temp->next->next = setnote(1, notes, 1, 4);
+    currentnote = setnote(1, E, 1, 4);
+    currentnote->next = temp1 = setnote(1, E, 1, 4);
+    temp1->next = temp2 = setnote(1, F, 1, 2);
+    temp2->next = temp1 = setnote(1, E, 1, 2);
+    temp1->next = temp2 = setnote(1, F, 1, 2);
+    
 
     // ready to play
     if (currentnote)  {
