@@ -13,3 +13,18 @@ Note* setnote(int numnotes, int notes[], int lengthn, int lengthd)  {
     
     return temp;
 }
+
+Note* addnote(Note* head, Note* newnote)  {
+    while (head->next)  {
+        head = head->next;
+    }
+    head->next = newnote;
+    
+    return newnote;
+}
+
+Note* addnote(Note* head, int numnotes, int notes[], int lengthn, int lengthd)  {
+    Note* temp = setnote(numnotes, notes, lengthn, lengthd);
+    
+    return addnote(head, temp);
+}

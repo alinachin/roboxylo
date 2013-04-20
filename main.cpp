@@ -7,6 +7,8 @@ Timeout universal;  // universal timer - counts down after each note to next not
 Note* currentnote;  // pointer to current note
 Note* lastnote;     // pointer to last (tail) note - for note creation
 
+int BPM;            // global BPM (speed)
+
 void play()  {
     // turn on keys
     for (int i=0; i < currentnote->n; ++i)
@@ -36,20 +38,60 @@ void playnext()  {
 
 
 
-// easily create a continuous sequence of notes, returning a pointer to initial note
-void scale(int start, int end, int lengthn, int lengthd)  {
+// easily create a continuous sequence of notes w/ specified duration, returning a pointer to initial note
+Note* scale(int start, int end, int lengthn, int lengthd)  {
+    int ntuple; // number of notes to play
+    float length;  // length of each individual note
+    int arr[] = {start};
     
+    if (start > end)  {
+        ntuple = start - end + 1;
+    }
+    else  {
+        ntuple = end - start + 1; 
+    }
+    
+    length = (float)lengthn / lengthd / ntuple;
+    Note* head = setnote(1, arr, 0, 0); // length dummied out for now
+    head->length = length;
+    
+    for (int i=1; i<ntuple; ++i)  {
+        int value;
+        if (start > end)  value = start - i;
+        else  value = start + i;
+        
+        int arr2[] = {value};
+        Note* temp = addnote(head, 1, arr2, 0, 0);
+        temp->length = length;
+    }
+    
+    return head;
+}
+
+// create a continuous alternation between 2 notes w/ specified duration
+Note* trill(int n1, int n2, int lengthn, int lengthd)  {
+    // use 16th notes (relative to BPM)
+    
+    
+    
+}
+
+Note* snare(int note, int lengthn, int lengthd)  {
+    return trill(note, note, lengthn, lengthd);
 }
 
 
 int main() {
+
+    BPM = 100;
+    
     // turn all keys off?
     for (int i=0; i<13; ++i)
         keys[i] = 0;
 
     // load notes into memory
   
-    int E[] = {1};
+    /* int E[] = {1};
     int F[] = {2};
     int G[] = {3};
     int A[] = {4};
@@ -61,6 +103,13 @@ int main() {
     temp1->next = temp2 = setnote(1, G, 1, 2);
     temp2->next = temp1 = setnote(1, F, 1, 2);
     temp1->next = temp2 = setnote(1, E, 1, 1);
+    */
+    int e[] = {E};
+    int fM[] = {C, F};
+    currentnote = setnote(1, e, 1, 1);
+    addnote(currentnote, 2, fM, 1, 1);
+    
+    addnote(currentnote, scale(G, hi(G), 1, 1));
     
 
     // ready to play
