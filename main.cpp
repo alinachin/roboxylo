@@ -1,6 +1,8 @@
 #include "mbed.h"
 #include "Note.h"
+
 #include "MidiFileIn/MidiFileIn.h"
+
 
 DigitalOut keys[] = { (p5), (p6), (p7), (p8), (p9), (p10), (p11), (p12), (p13), (p14), (p15), (p16), (p17) };  // output pins, 1 for each key
 Timeout universal;  // universal timer - counts down after each note to next note
@@ -38,7 +40,11 @@ void playnext()  {
 }
 
 
+
 /*
+
+
+
 // easily create a continuous sequence of notes w/ specified duration, returning a pointer to initial note
 Note* scale(int start, int end, int lengthn, int lengthd)  {
     int ntuple; // number of notes to play
@@ -80,7 +86,11 @@ Note* trill(int n1, int n2, int lengthn, int lengthd)  {
 Note* snare(int note, int lengthn, int lengthd)  {
     return trill(note, note, lengthn, lengthd);
 }
+
 */
+
+
+
 
 int main() {
 
@@ -114,7 +124,11 @@ int main() {
     
     addnote(currentnote, scale(G, hi(G), 1, 1));
     */
+
     /*
+
+    
+
     // last lab Demo
     
     currentnote = scale(F, D, 3, 2);
