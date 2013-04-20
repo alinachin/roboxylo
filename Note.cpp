@@ -28,3 +28,9 @@ Note* addnote(Note* head, int numnotes, int notes[], int lengthn, int lengthd)  
     
     return addnote(head, temp);
 }
+
+Note* addnote(Note* head, int note, int lengthn, int lengthd)  {
+    int noteArray[] = {note};
+    
+    return addnote(head, 1, noteArray, lengthn, lengthd);
+}

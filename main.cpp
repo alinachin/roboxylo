@@ -51,7 +51,7 @@ Note* scale(int start, int end, int lengthn, int lengthd)  {
         ntuple = end - start + 1; 
     }
     
-    length = (float)lengthn / lengthd / ntuple;
+    length = (float)lengthn/lengthd / ntuple / BPM*60;
     Note* head = setnote(1, arr, 0, 0); // length dummied out for now
     head->length = length;
     
@@ -72,7 +72,7 @@ Note* scale(int start, int end, int lengthn, int lengthd)  {
 Note* trill(int n1, int n2, int lengthn, int lengthd)  {
     // use 16th notes (relative to BPM)
     
-    
+    return NULL;
     
 }
 
@@ -83,7 +83,7 @@ Note* snare(int note, int lengthn, int lengthd)  {
 
 int main() {
 
-    BPM = 100;
+    BPM = 100;  // default tempo
     
     // turn all keys off?
     for (int i=0; i<13; ++i)
@@ -104,14 +104,44 @@ int main() {
     temp2->next = temp1 = setnote(1, F, 1, 2);
     temp1->next = temp2 = setnote(1, E, 1, 1);
     */
+    
+    /*
     int e[] = {E};
     int fM[] = {C, F};
     currentnote = setnote(1, e, 1, 1);
     addnote(currentnote, 2, fM, 1, 1);
     
     addnote(currentnote, scale(G, hi(G), 1, 1));
+    */
     
-
+    // last lab Demo
+    
+    currentnote = scale(F, D, 3, 2);
+    addnote(currentnote, D, 1, 2);
+    addnote(currentnote, E, 11, 2);
+    addnote(currentnote, G, 1, 2);
+    addnote(currentnote, scale(F, D, 3, 2));
+    addnote(currentnote, D, 3, 2);
+    addnote(currentnote, E, 1, 2);
+    addnote(currentnote, C, 3, 2);
+    addnote(currentnote, D, 1, 1);
+    addnote(currentnote, G, 9, 2);
+    addnote(currentnote, D, 1, 1);
+    addnote(currentnote, E, 1, 2);
+    addnote(currentnote, F, 1, 1);
+    addnote(currentnote, D, 1, 2);
+    addnote(currentnote, B, 1, 1);
+    addnote(currentnote, C, 1, 2);
+    addnote(currentnote, D, 1, 1);
+    addnote(currentnote, G, 1, 2);
+    addnote(currentnote, C, 1, 2);
+    addnote(currentnote, D, 1, 2);
+    addnote(currentnote, E, 1, 2);
+    addnote(currentnote, D, 1, 2);
+    addnote(currentnote, C, 1, 2);
+    addnote(currentnote, G, 1, 2);
+    
+    
     // ready to play
     if (currentnote)  {
         play();

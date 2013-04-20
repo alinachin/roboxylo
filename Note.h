@@ -24,4 +24,5 @@ Note* setnote(int, int[], int, int);
 // create a note and add to the end of the list linked to Note
 // returns pointer to the newest note (i.e. last)
 Note* addnote(Note*, int, int[], int, int);
+Note* addnote(Note*, int, int, int);
 Note* addnote(Note*, Note*);
